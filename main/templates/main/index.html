@@ -1,0 +1,23 @@
+<form method="post" action="{% url 'index' %}">
+    {% csrf_token %}
+    {% for q in questions %}
+        <hr>
+        <fieldset>
+        <legend>
+            <h3 id="{{q.question.text}}" style="{% if res == None%}color:black;{% elif res %}color:green;{% elif res == False %}color:red{% endif %}">{{q.question.text}}</h3>
+        </legend>
+        <ul>
+            {% for ans in q.answers %}
+                <div>
+                    <input type="radio" id="{{ans.text}}" name="{{q.question.text}}" value="{{ans.is_correct}}"/>
+                    <label for="{{ans.text}}">{{ans}}</label>
+                </div>
+            {% endfor %}
+            
+        </ul>
+        </fieldset>
+        <hr>
+        {% endfor %}
+        <button type="submit">Submit</button>
+</form>
+
