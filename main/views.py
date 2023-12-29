@@ -15,6 +15,7 @@ def index(request):
         return Response(serilaizer.data, status=status.HTTP_201_CREATED)
     if request.method == "POST":
         serilaizer = QuestionsSerializer(data=request.data)
+        ''' print(request.data) give dictionary '''
         if serilaizer.is_valid():
             serilaizer.save()
         return Response(serilaizer.data, status=status.HTTP_201_CREATED)
@@ -46,3 +47,14 @@ def update_question(request, id):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_question_by_id(request,id):
+    try:
+        question = Questions.objects.get(id=id)
+    except:
+        return Response({'message':'question with this id does not exit'},status=status.HTTP_400_BAD_REQUEST)
+    serilaizer = QuestionsSerializer(question)
+    return Response(serilaizer.data)
+
+    
